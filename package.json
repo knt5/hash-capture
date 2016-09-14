@@ -2,6 +2,7 @@
   "name": "hash-capture",
   "author": "knt5",
   "dependencies": {
+    "async": "^2.0.1",
     "webdriverio": "^4.2.15"
   }
 }

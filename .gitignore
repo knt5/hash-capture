@@ -10,3 +10,8 @@ npm-debug.log*
 
 # Selenium Web Driver
 selenium-server-standalone*.jar
+chromedriver*
+
+# App
+dat/
+capture/

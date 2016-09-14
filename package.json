@@ -1,0 +1,7 @@
+{
+  "name": "hash-capture",
+  "author": "knt5",
+  "dependencies": {
+    "webdriverio": "^4.2.15"
+  }
+}

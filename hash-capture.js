@@ -1,4 +1,5 @@
 const fs = require('fs');
+const execSync = require('child_process').execSync;
 
 const async = require('async');
 const webdriverio = require('webdriverio');
@@ -17,18 +18,18 @@ if (argv.length !== 6) {
 }
 
 // Save arguments
-target.repositoryDir = argv[2];
+const repositoryDir = argv[2];
 const hashTsvFile = argv[3];
 const waitToDeployMilliseconds = parseInt(argv[4], 10);
 const waitToCaptureMilliseconds = parseInt(argv[5], 10);
 
 // Check dir
-if (!fs.statSync(target.repositoryDir).isDirectory()) {
-	console.error(`${target.repositoryDir} is not directory`);
+if (!fs.statSync(repositoryDir).isDirectory()) {
+	console.error(`${repositoryDir} is not directory`);
 	process.exit(1);
 }
-if (!fs.statSync(target.repositoryDir + '/.git').isDirectory()) {
-	console.error(`No .git directory in ${target.repositoryDir}`);
+if (!fs.statSync(repositoryDir + '/.git').isDirectory()) {
+	console.error(`No .git directory in ${repositoryDir}`);
 	process.exit(1);
 }
 
@@ -54,6 +55,9 @@ hashTsv.split('\n').forEach((line) => {
 	series.push((callback) => {
 		// Checkout
 		console.log('git checkout ' + hash);
+		execSync(`git checkout ${hash}`, {
+			cwd: repositoryDir
+		});
 		
 		// Wait to deploy
 		setTimeout(callback, waitToDeployMilliseconds);
@@ -67,6 +71,11 @@ hashTsv.split('\n').forEach((line) => {
 			webdriverio
 				.remote(options)
 				.init()
+				.setViewportSize({
+					// iPhone 6 size
+					width: 375,
+					height: 667
+				})
 				.url(url)
 				.pause(waitToCaptureMilliseconds)
 				.saveScreenshot(`capture/${i}-${date}-${hash}.png`)

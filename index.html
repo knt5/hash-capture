@@ -1,21 +1,110 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Screenshots</title>
-	<style>
-	
-	</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screenshots</title>
+<style>
+.select-box {
+	float: left;
+}
+.image-box {
+	float: left;
+}
+.screenshot {
+	width: 400px;
+}
+#select {
+	width: 200px;
+}
+.cvr-box {
+	margin-top: 12px;
+	text-align: center;
+}
+.clearfix::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+</style>
 </head>
 <body>
 
+<div class="clearfix">
+	<div class="select-box">
+		<select id="select" size="40"></select>
+		<div class="cvr-box">
+			CVR(%) = <span id="cvr"></span>
+		</div>
+	</div>
+	<div class="image-box">
+	</div>
+</div>
 
-
-
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script>
+//=========================================================
+// config
+const numberOfImages = 2;
 
+//=========================================================
+// elements
+const $select = $('#select');
+const $imageBox = $('.image-box')
+const $cvr = $('#cvr')
 
+//=========================================================
+// load
+const hashes = [];
+const cvr = [];
+$.get('dat/hash.tsv', (data) => {
+	// Build data and select
+	let html = '';
+	data.split('\n').forEach((line) => {
+		if (line === '') {
+			return;
+		}
+		
+		// Data
+		let columns = {};
+		let list = line.split('\t');
+		columns.date = list[0];
+		columns.hash = list[1];
+		columns.name = list[2];
+		columns.comment = list[3];
+		
+		// Html
+		html += '<option>';
+		list.forEach((column, index) => {
+			if (index > 0) {
+				html += ', ';
+			}
+			html += column;
+		});
+		
+		// Data
+		hashes.push(columns);
+		
+		// Html
+		html += '</option>';
+		
+		// Dummy CVR
+		cvr.push(Math.floor(Math.random() * 16 * 100) / 100);
+	});
+	$select.append(html);
+	
+	// Change handler
+	$select.on('change', () => {
+		const i = $select.prop('selectedIndex');
+		let html = '';
+		for (let n = 0; n < numberOfImages; n++) {
+			html += `<img src="capture/${n}-${hashes[i].date}-${hashes[i].hash}.png" class="screenshot">`;
+		}
+		$imageBox.html(html);
+		$cvr.text(cvr[i]);
+	});
+	
+});
 
 
 </script>

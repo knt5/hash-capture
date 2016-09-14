@@ -17,5 +17,5 @@ npm i
 java -jar selenium-server-standalone-2.53.1.jar
 
 # Run
-node hash-capture.js path/to/your/repository dat/hash.tsv 2000 1000
+node hash-capture.js path/to/your/repository dat/hash.tsv 5000 5000
 ```

@@ -13,5 +13,7 @@ selenium-server-standalone*.jar
 chromedriver*
 
 # App
-dat/
-capture/
+dat/*
+!dat/.gitkeep
+capture/*
+!capture/.gitkeep

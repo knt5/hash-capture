@@ -16,7 +16,7 @@ npm i
 
 ```
 cd path/to/your/repository
-path/to/hash-capture/tools/git-log-to-tsv.sh > path/to/hash-capture/dat/hash.tsv
+bash path/to/hash-capture/tools/git-log-to-tsv.sh > path/to/hash-capture/dat/hash.tsv
 ```
 
 ### Capture screenshots

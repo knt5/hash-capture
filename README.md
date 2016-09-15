@@ -28,3 +28,11 @@ java -jar selenium-server-standalone-2.53.1.jar
 # Run hash-capture
 node hash-capture.js path/to/your/repository dat/hash.tsv 5000 5000
 ```
+
+### See results
+
+```
+python -m SimpleHTTPServer
+```
+
+Access to http://localhost:8000/

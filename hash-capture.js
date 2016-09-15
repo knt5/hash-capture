@@ -64,28 +64,35 @@ hashTsv.split('\n').forEach((line) => {
 	});
 	
 	// Capture
-	series.push((callback) => {
-		let i = 0;
+	let i = 0;
+	for (const url of target.urls) {
+		series.push(((i, length, url, date, hash) => {
+			return (callback) => {
+				webdriverio
+					.remote(options)
+					.init()
+					.setViewportSize({
+						// iPhone 6 size
+						width: 375,
+						height: 667
+					})
+					.url(url)
+					.pause(waitToCaptureMilliseconds)
+					.saveScreenshot(`capture/${i}-${date}-${hash}.png`)
+					.end();
+				
+				if (i < length - 1) {
+					// Wait to go next
+					setTimeout(callback, 5000);
+				} else {
+					// Final
+					setTimeout(callback, waitToCaptureMilliseconds);
+				}
+			};
+		})(i, target.urls.length, url, date, hash));
 		
-		for (const url of target.urls) {
-			webdriverio
-				.remote(options)
-				.init()
-				.setViewportSize({
-					// iPhone 6 size
-					width: 375,
-					height: 667
-				})
-				.url(url)
-				.pause(waitToCaptureMilliseconds)
-				.saveScreenshot(`capture/${i}-${date}-${hash}.png`)
-				.end();
-			
-			i++;
-		}
-		
-		setTimeout(callback, waitToCaptureMilliseconds);
-	});
+		i++;
+	}
 });
 
 // Run series

@@ -5,9 +5,6 @@
 node_modules
 npm-debug.log*
 
-# Gulp
-/gulp/works/
-
 # Selenium Web Driver
 selenium-server-standalone*.jar
 chromedriver*
